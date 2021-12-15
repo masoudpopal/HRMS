@@ -67,6 +67,17 @@ Feature: Add Employee
   @excel
   Scenario: Adding an employee from excel file
     When user adds multiple employees from excel file usin "EmployeeData" sheet and verify the added employee
+  @db @regression
+  Scenario: Adding employee and validating in DataBase
+    When user enters "Mike" "Lopez" and "Meme"
+    And captures employee id
+    And user clicks on save button
+    And employee added successfully
+    Then query HRMS database
+    And verify employee data is matched in ui and db
+
+
+
 
 
 

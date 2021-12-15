@@ -11,6 +11,7 @@ import pages.DashBoardPage;
 import utils.CommonMethods;
 import utils.Constants;
 import utils.ExcelReading;
+import utils.GlobalVariables;
 
 import java.util.Iterator;
 import java.util.List;
@@ -78,6 +79,10 @@ public class AddEmployeeSteps extends CommonMethods {
 
     @When("user enters {string} {string} and {string} for an employee")
     public void user_enters_and_for_an_employee(String firstName, String middleName, String lastName) {
+        // initializing global variables using local variables (values coming from feature file)
+        GlobalVariables.firstName=firstName;
+        GlobalVariables.middleName=middleName;
+        GlobalVariables.lastName=lastName;
         AddEmployeePage addEmployeePage = new AddEmployeePage();
         sendText(addEmployeePage.firtName, firstName);
         sendText(addEmployeePage.middleName, middleName);
@@ -160,6 +165,19 @@ public class AddEmployeeSteps extends CommonMethods {
             //Assertion in HW
             click(dash.addEmployeeButton);
         }
+    }
+    @When("captures employee id")
+    public void captures_employee_id(){
+        AddEmployeePage emp = new AddEmployeePage();
+       GlobalVariables.empId = emp.employeeId.getAttribute("value");
+
+    }
+    @Then("verify employee data is matched in ui and db")
+    public void verify_employee_data_is_matched_in_ui_and_db() {
+        Assert.assertEquals(GlobalVariables.mapDataFromDb.get("emp_firstname"), GlobalVariables.firstName);
+        Assert.assertEquals(GlobalVariables.mapDataFromDb.get("emp_middle_name"), GlobalVariables.middleName);
+        Assert.assertEquals(GlobalVariables.mapDataFromDb.get("emp_lastname"), GlobalVariables.lastName);
+
     }
 
 
